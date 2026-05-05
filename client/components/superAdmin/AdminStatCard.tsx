@@ -1,6 +1,9 @@
 type Props = {
   count: number
   onAdd: () => void
+
+  
+  
 }
 
 export default function AdminStatCard({ count, onAdd }: Props) {
@@ -13,6 +16,7 @@ export default function AdminStatCard({ count, onAdd }: Props) {
       <button onClick={onAdd} className="bg-blue-800 w-30 h-8 rounded-lg hover:bg-blue-700 cursor-pointer text-white">
         + Add Admin
       </button>
+      
     </div>
   )
 }

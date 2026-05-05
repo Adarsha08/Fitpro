@@ -15,11 +15,13 @@ export default function Login() {
   const router = useRouter()
   const [error, setError] = useState("")
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginForm>()
+  
 
   const onSubmit = async (data: LoginForm) => {
     try {
       setError("")
       const res = await api.post('/auth/login', data)
+      console.log(res)
       auth?.login(res.data.accessToken, res.data.user)
       const role = res.data.user.role
       if (role === 'SUPER_ADMIN') router.push('/superAdmin')
