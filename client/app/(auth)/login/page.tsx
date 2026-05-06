@@ -28,7 +28,8 @@ export default function Login() {
       else if (role === 'ADMIN') router.push('/admin')
       else if (role === 'TRAINER') router.push('/trainer')
       else if (role === 'MEMBER') router.push('/member')
-    } catch (err: any) {
+    }
+     catch (err: any) {
       setError(err.response?.data?.message || "Login failed")
     }
   }
