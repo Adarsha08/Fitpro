@@ -5,8 +5,10 @@ import { createTrainerSchema,createPlanSchema } from "./adminSchema";
 //to create trainer 
 export const createTrainer = async (req: Request, res: Response,next:NextFunction) => {
   //try catch block
+  console.log("hello")
   try {
     //data from the body
+    
     const result=createTrainerSchema.safeParse(req.body)
     if(!result.success)
     {
@@ -66,13 +68,20 @@ export const getAllUsers=async(req:Request,res:Response,next:NextFunction)=>
 {
   //try catch 
   try{
+   
     const role=req.query.role as string
+    const adminId=req.user?.id
+    
    
     if(!role)
     {
       return res.status(400).json("only admin can get ")
     }
-    const allUsers=await allUsersService(role)
+    if(!adminId)
+    {
+      return res.status(401).json("doesnt have adminid")
+    }
+    const allUsers=await allUsersService(role,adminId)
     return res.status(200).json(allUsers)
   }
   catch(err:any)

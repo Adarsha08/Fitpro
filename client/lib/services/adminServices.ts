@@ -1,3 +1,4 @@
+import { id } from "zod/locales";
 import api from "../api";
 //getting users from backend 
 export const getAllUser=async(role:string)=>
@@ -17,12 +18,7 @@ export const deleteUserById=async(id:string)=>
     const res=await api.delete(`/admin/deleteUser/${id}`)
     return res.data
 }
-//getallplans
-export const getAllPlans=async()=>
-{
-    const res=await api.get('/admin/allPlans')
-    return res.data
-}
+
 //create trainer
 export const createTrainer = async (data: {
   name: string
@@ -40,4 +36,31 @@ export const createMember = async (data: {
 }) => {
   const res = await api.post('/admin/create-member', data)
   return res.data
+}
+//delete user
+export const deleteUser=async(id:string)=>
+{
+  const res=await api.delete(`/admin/deleteUser/${id}`)
+  return res
+}
+//getallplans
+export const getAllPlans=async()=>
+{
+    const res=await api.get('/admin/allPlans')
+    console.log("plans data:", res.data)
+    return res.data
+}
+export const createSubPlan=async(data:{
+  name:string
+  price:number
+  durationDays:number
+})=>
+{
+  const res=await api.post('/admin/create-subscriptionPlan',data)
+  return res.data
+}
+//delete plans
+export const deletePlan=async()=>
+{
+  const res=await api.delete('/admin/')
 }

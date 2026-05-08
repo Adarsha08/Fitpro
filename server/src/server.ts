@@ -7,7 +7,7 @@ import adminRoutes from './modules/admin/adminRoute'
 import trainerRoute from './modules/trainer/trainerRoute'
 import memberRoute from './modules/member/memberRoute'
 import {errorHandler} from './middleware/errorHandler'
-import { globalLimiter } from './middleware/rateLimiter'
+// import { globalLimiter } from './middleware/rateLimiter'
 import cookieParser from 'cookie-parser'
 dotenv.config()
 const app=express()
@@ -19,7 +19,7 @@ app.use(cors({
   credentials:true, methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }))
-app.use(globalLimiter)
+// app.use(globalLimiter)
 
 app.get('/', (req, res) => {
   res.json({ message: 'Server is running' })

@@ -6,10 +6,8 @@ import {getAllPlans} from '@/lib/services/adminServices'
 export const usePlans=()=>
 {
     //place to store the fetched data 
-    const [plans,setPlans]=useState([])
+    const [plans, setPlans] = useState<any[]>([])
     const [loading,setLoading]=useState(true)
-
-
     const fetchPlans=async()=>
     {
         try{
@@ -19,7 +17,6 @@ export const usePlans=()=>
         catch(err:any)
         {
             console.error(err)
-
         }
         finally{
             setLoading(false)

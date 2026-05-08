@@ -66,9 +66,12 @@ export const createMemberService = async (
 };
 
 //for getting all trainer
-export const allUsersService = async (role: string) => {
+export const allUsersService = async (role: string,adminId:string) => {
+  console.log('adminId received:', adminId)
+  console.log('role received:', role)
   const allUsers = await prisma.user.findMany({
     where: {
+      adminId:adminId,
       role: role as Role,
     },
     select: {
@@ -126,6 +129,8 @@ export const deletedUserService = async (adminId: string, userId: string) => {
   if (checkUser.adminId !== adminId) {
     throw new Error("You are not authorized to delete this adminid");
   }
+  console.log('checkUser.adminId:', checkUser.adminId)
+console.log('adminId:', adminId)
   const deletedUser = await prisma.user.delete({
     where: { id: userId },
   });

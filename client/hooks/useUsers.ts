@@ -10,6 +10,7 @@ export const useUsers = (role: string | null) => {
 
   const fetchUsers = useCallback(async (currentRole: string | null) => {
     try {
+      console.log('fetching users with role:', currentRole)
       setLoading(true)
 
       if (!currentRole) {
