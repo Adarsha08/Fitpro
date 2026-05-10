@@ -202,6 +202,17 @@ export const assignPlanService = async (memberId: string, planId: string) => {
   return subscription;
 };
 
+//get the assigned plan of the member 
+export const getAssignPlanService=async(memberId:string)=>
+{
+  const assignedPlan=await prisma.subscription.findMany({
+    where:{
+      userId:memberId
+    }
+  })
+  return assignedPlan
+}
+
 //gettting the member status 
 export const getStatusService=async(memberId:string)=>
 {

@@ -47,7 +47,7 @@ export const deleteUser=async(id:string)=>
 export const getAllPlans=async()=>
 {
     const res=await api.get('/admin/allPlans')
-    console.log("plans data:", res.data)
+  
     return res.data
 }
 export const createSubPlan=async(data:{
@@ -63,4 +63,21 @@ export const createSubPlan=async(data:{
 export const deletePlan=async()=>
 {
   const res=await api.delete('/admin/')
+}
+//assign plan 
+export const assignPlan=async(data:{
+  memberId:string,
+  planId:string
+})=>
+{
+  const res=await api.post('/admin/assignPlan',data)
+  return res.data
+}
+
+
+//get the assigned planed for the user
+export const  getAssignPlan=async(memberId:string)=>
+{
+  const res=await api.get(`/admin/getAssignPlan/${memberId}`)
+  return res.data
 }

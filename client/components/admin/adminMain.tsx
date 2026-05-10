@@ -7,9 +7,10 @@ type Props = {
   plans: any[]
   onAdd: (type: "TRAINER" | "MEMBER" | "PLAN") => void
    ondelete: (id:string) => void
+   onAssign:(id:string)=>void
 }
 
-export default function AdminMain({ trainers, members, plans, onAdd,ondelete }: Props) {
+export default function AdminMain({ trainers, members, plans, onAdd,ondelete,onAssign }: Props) {
   const [activeTab, setActiveTab] = useState<"trainers" | "members" | "plans">("trainers")
 
   return (
@@ -69,10 +70,9 @@ export default function AdminMain({ trainers, members, plans, onAdd,ondelete }: 
                     <p className="text-sm text-gray-400">{member.email}</p>
                   </div>
                   <div className="flex flex-row gap-2 ">
-                  <button  className="text-xs cursor-pointer text-green-500 border border-green-200 rounded-lg px-3 py-1.5 hover:bg-green-50 transition">AssignPlan</button>
+                  <button onClick={()=>onAssign(member.id)}  className="text-xs cursor-pointer text-green-500 border border-green-200 rounded-lg px-3 py-1.5 hover:bg-green-50 transition">AssignPlan</button>
                   <button onClick={()=>ondelete(member.id)} className="text-xs cursor-pointer text-red-500 border border-red-200 rounded-lg px-3 py-1.5 hover:bg-red-50 transition">Delete</button>
                   </div>
-                  
                 </div>
               ))}
             </div>

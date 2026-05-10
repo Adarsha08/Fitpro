@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express-serve-static-core";
-import { createTrainerService,userByIdService,createMemberService,allUsersService,deletedUserService,createPlanService,getPlanService,assignPlanService,getStatusService } from "../admin/adminService";
+import { createTrainerService,userByIdService,createMemberService,allUsersService,deletedUserService,createPlanService,getPlanService,assignPlanService,getStatusService,getAssignPlanService } from "../admin/adminService";
 import { createTrainerSchema,createPlanSchema } from "./adminSchema";
 
 //to create trainer 
@@ -197,6 +197,23 @@ export const assignPlan=async(req:Request,res:Response,next:NextFunction)=>
     
     return res.status(200).json({message:"Sucessfully assign the plan",subscription})
 
+  }
+  catch(err:any)
+  {
+    next(err)
+  }
+}
+//get assign plan for the specific user 
+export const getAssignPlan=async(req:Request,res:Response,next:NextFunction)=>
+{
+  try{
+    const memberId=req.params.id as string
+    if(!memberId)
+    {
+      return res.status(401).json({message:"didnt get the memberid "})
+    }
+    const assignedPlan=await getAssignPlanService(memberId)
+    return res.status(200).json(assignedPlan)
   }
   catch(err:any)
   {
