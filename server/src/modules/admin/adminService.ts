@@ -67,8 +67,7 @@ export const createMemberService = async (
 
 //for getting all trainer
 export const allUsersService = async (role: string,adminId:string) => {
-  console.log('adminId received:', adminId)
-  console.log('role received:', role)
+  
   const allUsers = await prisma.user.findMany({
     where: {
       adminId:adminId,

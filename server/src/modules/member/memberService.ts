@@ -1,15 +1,15 @@
 import prisma from "../../lib/prisma"
-export const viewAllPlansService=async(memberId:string)=>
-{
-    const getAllPlans=await prisma.workoutAssignment.findMany({
-        where:{
-            memberId:memberId
-        },
-        include:{
-            plan:true
-        }
-    })
-    return getAllPlans
+export const viewAllPlansService = async (memberId: string) => {
+  const getSubscription = await prisma.subscription.findFirst({
+    where: {
+      userId: memberId,
+      status: "ACTIVE"
+    },
+    include: {
+      plan: true
+    }
+  })
+  return getSubscription
 }
 
 export const getTrainerAvailabilityService=async(trainerId:string)=>

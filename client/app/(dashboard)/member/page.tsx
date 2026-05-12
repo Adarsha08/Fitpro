@@ -1,16 +1,13 @@
 "use client";
 
+import PlainCard from "@/components/member/plainCard";
+import {useMemberPlan} from '@/hooks/useMemberPlan'
 export default function Member() {
+  const {memberPlan,loading,refetch:fetcheMemberPlan}=useMemberPlan()
   return (
     <div>
 
-      <div>
-        hello
-      </div>
-     
-      <main>
-
-      </main>
+      <PlainCard memberPlans={memberPlan}/>
       
     </div>
   );
