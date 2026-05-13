@@ -12,7 +12,7 @@ export const useMemberPlan=()=>
         try{
             const memberplans=await getMemberPlans()
             setmemberPlan(memberplans)
-            console.log(memberPlan)
+           
             
         }
         catch(err:any)

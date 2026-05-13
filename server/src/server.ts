@@ -12,13 +12,14 @@ import cookieParser from 'cookie-parser'
 dotenv.config()
 const app=express()
 
-app.use(cookieParser())
-app.use(express.json())
 app.use(cors({
-  origin:process.env.CORS_ORIGIN,
-  credentials:true, methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  origin: process.env.CORS_ORIGIN,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }))
+app.use(express.json())
+app.use(cookieParser())
 // app.use(globalLimiter)
 
 app.get('/', (req, res) => {

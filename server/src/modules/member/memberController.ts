@@ -1,5 +1,5 @@
 import { NextFunction, Request,Response } from "express-serve-static-core"
-import{viewAllPlansService,getTrainerAvailabilityService,sessionBookService,addAttendenceService,getAllSessionService,getAttendenceService} from './memberService'
+import{viewAllPlansService,getTrainerAvailabilityService,sessionBookService,addAttendenceService,getAllSessionService,getAttendenceService,getAllTrainersService} from './memberService'
 export const viewAllPlans=async(req:Request,res:Response,next:NextFunction)=>
 {
     try{
@@ -35,8 +35,29 @@ export const getTrainerAvailability=async(req:Request,res:Response,next:NextFunc
         next(err)
     }
 }
+//get all the trainers
+export const getAllTrainers=async(req:Request,res:Response,next:NextFunction)=>
+{
+    
+
+    try{
+        const memberId=req.user?.id 
+        if(!memberId)
+        {
+            return res.status(400).json({message:"no userid "})
+        }
+        const getTrainers=await getAllTrainersService(memberId)
+        return res.status(200).json(getTrainers)
+    }
+    catch(err:any)
+    {
+         next(err)
+    }
+}
 //book the session 
 export const sessionBook=async(req:Request,res:Response,next:NextFunction)=>{
+      console.log("body:", req.body)
+  console.log("user:", req.user)
     try{
         const {trainerId,date}=req.body
         const memberId=req.user?.id as string
@@ -47,7 +68,7 @@ export const sessionBook=async(req:Request,res:Response,next:NextFunction)=>{
         {
             return res.status(401).json({message:"didnt get the memberid in the req params "})
         }
-        const bookedSession=sessionBookService(trainerId,date,memberId)
+        const bookedSession=await sessionBookService(trainerId,date,memberId)
         return res.status(200).json({message:"Created Sucessfully",bookedSession})
     }
     catch(err:any)
@@ -64,8 +85,8 @@ export const getAllSession=async(req:Request,res:Response,next:NextFunction)=>
         {
             return res.status(400).json({message:"request doesnt have the memberId"})
         }
-        const getSession=getAllSessionService(memberId)
-        return res.status(200).json({getSession})
+        const getSession=await getAllSessionService(memberId)
+        return res.status(200).json(getSession)
     }
     catch(err:any)
     {

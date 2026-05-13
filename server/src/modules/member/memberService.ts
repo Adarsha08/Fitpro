@@ -21,26 +21,63 @@ export const getTrainerAvailabilityService=async(trainerId:string)=>
     })
     return trainerAvailable
 }
+//get all the trainers
+export const getAllTrainersService=async(memberId:string)=>
+{
+    const member=await prisma.user.findUnique({
+        where:{
+            id:memberId
+        },
+        select:{adminId:true}
+    })
+     if (!member?.adminId) throw new Error("Member has no admin assigned")
+    const getTrainers=await prisma.user.findMany({
+        where:{
+            adminId:member?.adminId,
+            role:"TRAINER"
+        }
+        ,select:{
+            id:true,
+            name:true,
+            email:true,
+            role:true,
+            availabilities:true
+        }
+    })  
+    return getTrainers
+
+}
 
 //book the trainer session 
-export const sessionBookService =async(trainerId:string,date:Date,memberId:string)=>{
-    // create the session booking 
-    const createSession=await prisma.sessionBooking.create({
-        data:{
-            trainerId:trainerId,
-            date:date,
-            status:"BOOKED",
-            memberId:memberId
-        }
-    })
-    const removeSlot=await prisma.trainerAvailability.deleteMany
-    ({
-        where:{
-            trainerId,
-            date
-        }
-    })
-    return createSession
+export const sessionBookService = async (trainerId: string, date: string, memberId: string) => {
+  const activeSession = await prisma.sessionBooking.findFirst({
+    where: {
+      memberId,
+      status: "BOOKED"
+    }
+  })
+
+  if (activeSession) {
+    throw new Error("You already have an active session. Complete or cancel it first.")
+  }
+
+  const createSession = await prisma.sessionBooking.create({
+    data: {
+      trainerId,
+      date: new Date(date),
+      status: "BOOKED",
+      memberId
+    }
+  })
+
+  await prisma.trainerAvailability.deleteMany({
+    where: {
+      trainerId,
+      date: new Date(date)
+    }
+  })
+
+  return createSession
 }
 //get all the sessionBooked
 export const getAllSessionService=async(memberId:string)=>
