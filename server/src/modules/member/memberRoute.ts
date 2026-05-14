@@ -16,7 +16,7 @@ router.get('/getAllSession',authMiddleware,roleMiddleware(["MEMBER"]),getAllSess
 //post for member attendence 
 router.post('/attendence',authMiddleware,roleMiddleware(["MEMBER"]),addAttendence)
 //get all the attendence
-router.post('/getAttendence',authMiddleware,roleMiddleware(["MEMBER"]),getAttendence)
+router.get('/getAttendence',authMiddleware,roleMiddleware(["MEMBER"]),getAttendence)
 
 
 export default router

@@ -92,7 +92,7 @@ export const updateStatus=async(req:Request,res:Response,next:NextFunction)=>{
     {
       return res.status(400).json({message:"the fields are empty "})
     }
-    const updatedSession=updateSessionService(status,sessionId)
+    const updatedSession=await updateSessionService(status,sessionId)
     return res.status(201).json({message:"Updated sessionStatus ",updateSessionService})
   }
   catch(err:any)
