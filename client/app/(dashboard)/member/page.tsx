@@ -9,9 +9,9 @@ export default function Member() {
   const{trainers,loading,error,refetch}=useTrainer()
   
   return (
-    <div>
+    <div className="">
       <PlainCard memberPlans={memberPlan} />
-      <MemberMain 
+      <MemberMain  
         trainers={trainers}
       />
     </div>

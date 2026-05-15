@@ -27,6 +27,6 @@ export const useAttendence = () => {
     attendence,
     loading,
     error,
-    refetch: () => fetchAttendence,
+    refetch:fetchAttendence,
   }
 }

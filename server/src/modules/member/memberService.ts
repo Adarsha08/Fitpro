@@ -88,16 +88,16 @@ export const getAllSessionService=async(memberId:string)=>
 })
     return getSession
 }
-//add attendence 
-export const addAttendenceService=async(memberId:string)=>
-{
-    const attendence=await prisma.attendance.create({
-        data:{
-            userId:memberId
-        }
-    })
-    return attendence
-}
+// //add attendence 
+// export const addAttendenceService=async(memberId:string)=>
+// {
+//     const attendence=await prisma.attendance.create({
+//         data:{
+//             userId:memberId
+//         }
+//     })
+//     return attendence
+// }
 
 //get attendence
 export const getAttendenceService=async(memberId:string)=>
@@ -108,5 +108,34 @@ export const getAttendenceService=async(memberId:string)=>
         }
     })
     return attendance
+}
+
+//add attendence
+export const addAttendenceService = async (memberId: string) => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const tomorrow = new Date(today)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
+ const existingAttendance = await prisma.attendance.findFirst({
+  where: {
+    userId: memberId,
+    date: {
+      gte: today,
+      lt: tomorrow
+    }
+  }
+})
+
+  if (existingAttendance) {
+    throw new Error("Attendance already marked for today")
+  }
+
+  const attendance = await prisma.attendance.create({
+    data: { userId: memberId }
+  })
+
+  return attendance
 }
 

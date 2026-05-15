@@ -118,7 +118,7 @@ export const getAttendence=async(req:Request,res:Response,next:NextFunction)=>
         {
             return res.status(400).json({message:"Unauthorized"})
         }
-        const getAttendence=getAttendenceService(memberId)
+        const getAttendence= await getAttendenceService(memberId)
         return res.status(200).json(getAttendence)
     }
     catch(err:any)

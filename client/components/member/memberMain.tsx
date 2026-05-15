@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { useSession } from "@/hooks/member/useSession";
 import { useAttendence } from "@/hooks/member/useAttendence";
 
-
 type Props = {
   trainers: any[];
 };
@@ -19,9 +18,9 @@ export default function MemberMain({ trainers }: Props) {
   const [bookModal, setBookModal] = useState(false);
   const [selectedTrainer, setSelectedTrainer] = useState<any>(null);
   const [date, setDate] = useState("");
-  
-  const { sessionbook, loading: sessionLoading, error: sessionError, refetch: sessionRefetch } = useSession();
-  const { attendence, loading: attendenceLoading, error: attendenceError, refetch: attendenceRefetch } = useAttendence();
+
+  const { sessionbook, refetch: sessionRefetch } = useSession();
+  const { attendence, refetch: attendenceRefetch } = useAttendence();
 
   const handleBookSession = (trainer: any) => {
     setSelectedTrainer(trainer);
@@ -33,32 +32,31 @@ export default function MemberMain({ trainers }: Props) {
     try {
       await sessionBook({ trainerId: selectedTrainer.id, date });
       toast.success("Session booked successfully!");
+      sessionRefetch();
       setBookModal(false);
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Failed to book session");
     }
   };
 
-  //mark attendence
- const markedAttendence = async () => {
-  try {
-    await markAttendence();
-    toast.success("Attendance marked");
+  const markedAttendence = async () => {
+    try {
+      await markAttendence();
+      toast.success("Attendance marked");
+      attendenceRefetch();
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Error marking attendance");
+    }
+  };
 
-    attendenceRefetch(); 
-  } catch (err: any) {
-    toast.error(err?.response?.data?.message || "Error marking attendance");
-  }
-};
-
-  if (sessionLoading) return "Loading sessions...";
-  if (attendenceLoading) return "Updating attendance...";
-
-
+  const present = attendence.length;
+  const absent = 0;
+  const rate = attendence.length > 0 ? 100 : 0;
 
   return (
-    <div className="">
-      <div className="flex gap-4 border-b mb-6">
+    <div className=" bg-gray-50 pb-10">
+      {/* TABS */}
+      <div className="flex gap-4 border-b border-gray-200 mb-6 bg-gray-50">
         {["trainers", "sessions", "attendance"].map((tab) => (
           <button
             key={tab}
@@ -106,11 +104,7 @@ export default function MemberMain({ trainers }: Props) {
 
       {/* SESSIONS */}
       {activeTab === "sessions" && (
-        
         <div className="flex flex-col gap-3">
-          <div onClick={markedAttendence}>
-            +Mark Attendece
-          </div>
           {sessionbook.length === 0 ? (
             <p className="text-sm text-gray-400 text-center py-10">
               No sessions yet
@@ -125,7 +119,9 @@ export default function MemberMain({ trainers }: Props) {
                   <p className="font-semibold text-gray-800">
                     {session.trainer.name}
                   </p>
-                  <p className="text-sm text-gray-400">{session.trainer.email}</p>
+                  <p className="text-sm text-gray-400">
+                    {session.trainer.email}
+                  </p>
                   <p className="text-sm text-gray-400">
                     {new Date(session.date).toLocaleString()}
                   </p>
@@ -142,31 +138,50 @@ export default function MemberMain({ trainers }: Props) {
       {/* ATTENDANCE */}
       {activeTab === "attendance" && (
         <div className="flex flex-col gap-4">
+          <div className="flex justify-end">
+            <button
+              onClick={markedAttendence}
+              className="px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:opacity-90 transition cursor-pointer"
+            >
+              + Mark Attendance
+            </button>
+          </div>
+
           {attendence.length === 0 ? (
             <p className="text-sm text-gray-400 text-center py-10">
               No attendance records
             </p>
           ) : (
             <>
-              {/* Stats */}
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-green-500">{}</div>
-                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wide">Present</div>
+                  <div className="text-2xl font-bold text-green-500">
+                    {present}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wide">
+                    Present
+                  </div>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-red-500">{}</div>
-                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wide">Absent</div>
+                  <div className="text-2xl font-bold text-red-500">
+                    {absent}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wide">
+                    Absent
+                  </div>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-gray-400">{}</div>
-                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wide">Rate</div>
+                  <div className="text-2xl font-bold text-gray-400">
+                    {rate}%
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wide">
+                    Rate
+                  </div>
                 </div>
               </div>
 
-              {/* Attendance List */}
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-                {attendence?.map((record: any, index: number) => (
+                {attendence.map((record: any, index: number) => (
                   <div
                     key={record.id}
                     className={`flex items-center justify-between px-4 py-3 ${
@@ -189,14 +204,8 @@ export default function MemberMain({ trainers }: Props) {
                         })}
                       </p>
                     </div>
-                    <span
-                      className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${
-                        record.status === "PRESENT"
-                          ? "bg-green-50 text-green-600 border-green-200"
-                          : "bg-red-50 text-red-500 border-red-200"
-                      }`}
-                    >
-                      {record.status}
+                    <span className="text-xs font-semibold px-3 py-1.5 rounded-full border bg-green-50 text-green-600 border-green-200">
+                      PRESENT
                     </span>
                   </div>
                 ))}
