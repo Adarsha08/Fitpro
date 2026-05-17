@@ -5,7 +5,9 @@ import {
   getAllPlanService,
   assignWorkoutService,
   addAvailabilityService,
-  updateSessionService
+  updateSessionService,
+  getTrainerSessionsService,
+  getTrainerAvailabilityService
 
 } from "./trainerService";
 //for creating the workout plan
@@ -94,6 +96,40 @@ export const updateStatus=async(req:Request,res:Response,next:NextFunction)=>{
     }
     const updatedSession=await updateSessionService(status,sessionId)
     return res.status(201).json({message:"Updated sessionStatus ",updateSessionService})
+  }
+  catch(err:any)
+  {
+    next(err)
+  }
+}
+//get the session status 
+export const getTrainerSessions=async(req:Request,res:Response,next:NextFunction)=>
+{
+  try{
+    const trainerId=req.user?.id
+    if(!trainerId)
+    {
+      return res.status(400).json({message:'id is empty '})
+    }
+    const trainerSession=await getTrainerSessionsService(trainerId)
+    return res.status(200).json(trainerSession)
+  }
+  catch(err:any)
+  {
+    next(err)
+  }
+}
+//get the trainer availabilty 
+export const getAvailability=async(req:Request,res:Response,next:NextFunction)=>
+{
+  try{
+    const trainerId=req.user?.id
+    if(!trainerId)
+    {
+      return res.status(400).json({message:"doenst got the trainerid"})
+    }
+    const avaibility=await getTrainerAvailabilityService(trainerId)
+    return res.status(200).json(avaibility)
   }
   catch(err:any)
   {

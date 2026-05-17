@@ -7,3 +7,15 @@ export const getWorkoutPlans=async()=>
     return res.data
     
 }
+//get the session status
+export const getSessionStatus=async()=>
+{
+    const res=await api.get('/trainer/getSessions')
+    return res.data
+}
+//get the traineravaibility 
+export const getTrainerAvaibility=async()=>
+{
+    const res=await api.get('/trainer/getavailability')
+    return res.data
+}

@@ -10,7 +10,6 @@ export const useAttendence = () => {
   const fetchAttendence = useCallback(async () => {
     try {
       const data=await getAttendence()
-      console.log("sessions:", data)
       setAttendence(data)
     } catch (err: any) {
       setError(err.message || "Something went wrong")

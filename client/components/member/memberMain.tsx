@@ -12,9 +12,9 @@ type Props = {
 };
 
 export default function MemberMain({ trainers }: Props) {
-  const [activeTab, setActiveTab] = useState<
-    "trainers" | "sessions" | "attendance"
-  >("trainers");
+    const [activeTab, setActiveTab] = useState<
+      "trainers" | "sessions" | "attendance"
+    >("trainers");
   const [bookModal, setBookModal] = useState(false);
   const [selectedTrainer, setSelectedTrainer] = useState<any>(null);
   const [date, setDate] = useState("");

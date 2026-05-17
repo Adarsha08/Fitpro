@@ -78,3 +78,22 @@ export const updateSessionService = async ( status: string,sessionId: string) =>
   })
   return updated
 }
+//get session 
+export const getTrainerSessionsService=async(trainerId:string)=>
+{
+    const trainerSession=await prisma.sessionBooking.findMany({
+        where:{
+            trainerId:trainerId
+        }
+    })
+    return trainerSession
+}
+//get the avaibility 
+export const getTrainerAvailabilityService=async(trainerId:string)=>
+{
+    const avaibility=await prisma.trainerAvailability.findMany({
+        where:{
+            trainerId:trainerId
+        }
+    })
+}
