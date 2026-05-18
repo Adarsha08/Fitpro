@@ -19,6 +19,7 @@ export default function Trainer(){
         />
         <TrainerMain
         workoutPlans={workoutPlans}
+        refetched={workoutRefetch}
         />
         </div>
         

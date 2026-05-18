@@ -7,7 +7,9 @@ import {
   addAvailabilityService,
   updateSessionService,
   getTrainerSessionsService,
-  getTrainerAvailabilityService
+  getTrainerAvailabilityService,
+  getMembersService,
+  getWorkoutProgressService
 
 } from "./trainerService";
 //for creating the workout plan
@@ -136,5 +138,34 @@ export const getAvailability=async(req:Request,res:Response,next:NextFunction)=>
     next(err)
   }
 }
+//get the member for the trainer
+export const getMembers=async(req:Request,res:Response,next:NextFunction)=>
+{
+  try{
+    const trainerId=req.user?.id
+    if(!trainerId){
+      return res.status(401).json({message:"doesnt have the trainerid"})
+    }
+    const members=await getMembersService(trainerId)
+    return res.status(200).json({members})
+  }
+  catch(err:any)
+  {
+    next(err)
+  }
+}
+
+export const getWorkoutProgress = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const trainerId = req.user?.id
+    if (!trainerId) return res.status(401).json({ message: "Unauthorized" })
+    const progress = await getWorkoutProgressService(trainerId)
+    return res.status(200).json(progress)
+  } catch (err: any) {
+    next(err)
+  }
+}
+
+
 
 

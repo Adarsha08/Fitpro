@@ -33,6 +33,7 @@ export const getAllPlanService=async(trainerId:string)=>
 //assigning the workout plan to the members 
 export const assignWorkoutService=async(memberId:string,planId:string,trainerId:string)=>
 {
+    
     const checkplans=await prisma.workoutPlan.findFirst({
         where:{
             trainerId:trainerId
@@ -59,12 +60,12 @@ export const assignWorkoutService=async(memberId:string,planId:string,trainerId:
 //creating the availability of the trainer 
 export const addAvailabilityService=async(trainerId:string,date:Date)=>
 {
-    const addedAvailability=await prisma.trainerAvailability.create({
-        data:{
-            trainerId:trainerId,
-            date
-        }
-    })
+    const addedAvailability = await prisma.trainerAvailability.create({
+  data: {
+    trainerId,
+    date: new Date(date)
+  }
+})
     return addedAvailability
 }
 
@@ -96,4 +97,39 @@ export const getTrainerAvailabilityService=async(trainerId:string)=>
             trainerId:trainerId
         }
     })
+    return avaibility
+}
+//get all the members
+export const getMembersService=async(trainerId:string)=>
+{
+    const trainer = await prisma.user.findUnique({
+    where: { id: trainerId },
+    select: { adminId: true }
+  })
+
+  if (!trainer?.adminId) throw new Error("Trainer has no admin assigned")
+
+  const members = await prisma.user.findMany({
+    where: {
+      adminId: trainer.adminId,
+      role: "MEMBER"
+    },
+    select: { id: true, name: true, email: true }
+  })
+
+  return members
+}
+
+
+export const getWorkoutProgressService = async (trainerId: string) => {
+  const progress = await prisma.workoutAssignment.findMany({
+    where: {
+      plan: { trainerId }
+    },
+    include: {
+      plan: true,
+      member: { select: { id: true, name: true, email: true } }
+    }
+  })
+  return progress
 }

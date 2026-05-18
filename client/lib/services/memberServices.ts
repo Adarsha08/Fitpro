@@ -37,4 +37,12 @@ export const markAttendence=async()=>
   const res=await api.post('/member/attendence')
   return res.data
 }
+export const getAssignedWorkouts = async () => {
+  const res = await api.get('/member/getWorkouts')
+  return res.data
+}
+export const markWorkoutComplete = async (workoutId: string) => {
+  const res = await api.patch(`/member/completeWorkout/${workoutId}`)
+  return res.data
+}
 

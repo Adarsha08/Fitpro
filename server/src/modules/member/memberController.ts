@@ -1,5 +1,5 @@
 import { NextFunction, Request,Response } from "express-serve-static-core"
-import{viewAllPlansService,getTrainerAvailabilityService,sessionBookService,addAttendenceService,getAllSessionService,getAttendenceService,getAllTrainersService} from './memberService'
+import{viewAllPlansService,getTrainerAvailabilityService,sessionBookService,addAttendenceService,getAllSessionService,getAttendenceService,getAllTrainersService,getAssignedWorkoutsService,completeWorkoutService} from './memberService'
 export const viewAllPlans=async(req:Request,res:Response,next:NextFunction)=>
 {
     try{
@@ -125,4 +125,26 @@ export const getAttendence=async(req:Request,res:Response,next:NextFunction)=>
     {
         next(err)
     }
+}
+
+export const getAssignedWorkouts = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const memberId = req.user?.id
+    if (!memberId) return res.status(401).json({ message: "Unauthorized" })
+    const workouts = await getAssignedWorkoutsService(memberId)
+    return res.status(200).json(workouts)
+  } catch (err: any) {
+    next(err)
+  }
+}
+//update workout plan 
+export const completeWorkout = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const workoutId = req.params.id as string
+    if (!workoutId) return res.status(400).json({ message: "No workout id" })
+    const workout = await completeWorkoutService(workoutId)
+    return res.status(200).json({ message: "Workout completed", workout })
+  } catch (err: any) {
+    next(err)
+  }
 }

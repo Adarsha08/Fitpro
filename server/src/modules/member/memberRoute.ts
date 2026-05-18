@@ -1,7 +1,7 @@
 import {Router} from "express"
 import { authMiddleware } from "../../middleware/authmiddleware"
 import { roleMiddleware } from "../../middleware/rolemiddleware"
-import {viewAllPlans,getTrainerAvailability,getAllTrainers,sessionBook,getAllSession,getAttendence,addAttendence} from '../member/memberController'
+import {viewAllPlans,getTrainerAvailability,getAllTrainers,getAssignedWorkouts,sessionBook,getAllSession,getAttendence,addAttendence,completeWorkout} from '../member/memberController'
 const router=Router()
 //view assign plans for the member
 router.get('/view-plans',authMiddleware,roleMiddleware(["MEMBER"]),viewAllPlans)
@@ -17,6 +17,10 @@ router.get('/getAllSession',authMiddleware,roleMiddleware(["MEMBER"]),getAllSess
 router.post('/attendence',authMiddleware,roleMiddleware(["MEMBER"]),addAttendence)
 //get all the attendence
 router.get('/getAttendence',authMiddleware,roleMiddleware(["MEMBER"]),getAttendence)
+//get the workout 
+router.get('/getWorkouts', authMiddleware, roleMiddleware(["MEMBER"]), getAssignedWorkouts)
+//update the assigned workout plan status 
+router.patch('/completeWorkout/:id',authMiddleware,roleMiddleware(["MEMBER"]),completeWorkout)
 
 
 export default router

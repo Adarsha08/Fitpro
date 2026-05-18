@@ -139,3 +139,20 @@ export const addAttendenceService = async (memberId: string) => {
   return attendance
 }
 
+export const getAssignedWorkoutsService = async (memberId: string) => {
+  const workouts = await prisma.workoutAssignment.findMany({
+    where: { memberId },
+    include: { plan: true }
+  })
+  return workouts
+}
+
+export const completeWorkoutService = async (workoutId: string) => {
+  const workout = await prisma.workoutAssignment.update({
+    where: { id: workoutId },
+    data: { status: "COMPLETED" }
+  })
+  return workout
+}
+
+

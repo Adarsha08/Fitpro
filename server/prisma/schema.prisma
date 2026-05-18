@@ -85,11 +85,11 @@ model WorkoutPlan {
   assignments WorkoutAssignment[]
   createdAt   DateTime @default(now())
 }
-
 model WorkoutAssignment {
   id         String @id @default(cuid())
   planId     String
   memberId   String
+  status     WorkoutStatus @default(PENDING)
   plan       WorkoutPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
   member     User @relation(fields: [memberId], references: [id], onDelete: Cascade)
   assignedAt DateTime @default(now())
@@ -97,6 +97,10 @@ model WorkoutAssignment {
   @@index([memberId])
 }
 
+enum WorkoutStatus {
+  PENDING
+  COMPLETED
+}
 model Attendance {
   id     String @id @default(cuid())
   userId String
