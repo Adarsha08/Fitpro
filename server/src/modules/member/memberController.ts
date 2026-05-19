@@ -56,8 +56,7 @@ export const getAllTrainers=async(req:Request,res:Response,next:NextFunction)=>
 }
 //book the session 
 export const sessionBook=async(req:Request,res:Response,next:NextFunction)=>{
-      console.log("body:", req.body)
-  console.log("user:", req.user)
+      
     try{
         const {trainerId,date}=req.body
         const memberId=req.user?.id as string

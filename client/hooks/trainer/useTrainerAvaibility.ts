@@ -9,7 +9,7 @@ export const useTrainerAvaibility = () => {
   const fetchTrainerAvaibility = useCallback(async () => {
     try {
       const data=await getTrainerAvaibility()
-      console.log("availability:", data)
+      
       
       setallavaibility(data)
     } catch (err: any) {

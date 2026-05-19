@@ -25,7 +25,6 @@ export const createAdminService=async(name:string,email:string,password:string)=
 }
 
 export const deleteAdminService = async (adminId: string, superAdmin: string) => {
-    console.log("hello")
   const checkAdmin = await prisma.user.findUnique({
     where: { id: adminId }
   })

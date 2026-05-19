@@ -32,7 +32,7 @@ export const createWorkoutPlans=async(data:{
 export const getTrainerMembers=async()=>
 {
     const res=await api.get('/trainer/getMembers')
-    console.log(res.data)
+    
     return res.data
 }
 export const assignWorkoutPlan = async (data: { memberId: string, planId: string }) => {

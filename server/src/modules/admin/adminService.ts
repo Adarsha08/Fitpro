@@ -14,13 +14,13 @@ export const createTrainerService = async (
       email: email,
     },
   });
-  console.log("hello");
+  
 
   //check if the email exist or not
   if (checkEmail) {
     throw new Error("Email already exists");
   }
-  console.log("hello1");
+
 
   //hashing the password
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -128,8 +128,7 @@ export const deletedUserService = async (adminId: string, userId: string) => {
   if (checkUser.adminId !== adminId) {
     throw new Error("You are not authorized to delete this adminid");
   }
-  console.log('checkUser.adminId:', checkUser.adminId)
-console.log('adminId:', adminId)
+ 
   const deletedUser = await prisma.user.delete({
     where: { id: userId },
   });

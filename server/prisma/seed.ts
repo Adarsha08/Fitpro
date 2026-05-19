@@ -10,7 +10,7 @@ async function main() {
     })
     if(existing)
     {
-        console.log("Admin alrady exist")
+       
         return
     }
     const hashedPassword=await bcrypt.hash('superadmin123',10)
@@ -23,7 +23,7 @@ async function main() {
             role:Role.SUPER_ADMIN
         }
     })
-    console.log("Super admin Created")
+    
 
 }
 main()

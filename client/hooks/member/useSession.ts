@@ -10,7 +10,7 @@ export const useSession = () => {
   const fetchSessionBook = useCallback(async () => {
     try {
       const data=await getAllSessionBook()
-      console.log("sessions:", data)
+      
       setsessionBook(data)
     } catch (err: any) {
       setError(err.message || "Something went wrong")

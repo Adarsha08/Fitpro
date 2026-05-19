@@ -52,7 +52,7 @@ export const getAdmins=async(req:Request,res:Response,next:NextFunction)=>
       return res.status(400).json({message:"Unauthorized"})
     }
     const getAllAdmins=await getAdminsService()
-    console.log(getAllAdmins)
+   
     return res.status(200).json(getAllAdmins)
   }
   catch(err:any)

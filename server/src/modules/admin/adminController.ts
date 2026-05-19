@@ -5,7 +5,7 @@ import { createTrainerSchema,createPlanSchema } from "./adminSchema";
 //to create trainer 
 export const createTrainer = async (req: Request, res: Response,next:NextFunction) => {
   //try catch block
-  console.log("hello")
+ 
   try {
     //data from the body
     
@@ -25,7 +25,7 @@ export const createTrainer = async (req: Request, res: Response,next:NextFunctio
     }
     
     //check if the email alrady exist or not
-        console.log("adminId being passed:", adminId)
+       
     const trainer =await createTrainerService(name, email, password, adminId);
     return res.status(200).json({ message: "Trainer created sucessfully",trainer });
   } catch (err:any) {

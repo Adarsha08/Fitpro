@@ -21,7 +21,7 @@ export default function Login() {
     try {
       setError("")
       const res = await api.post('/auth/login', data)
-      console.log(res)
+      
       auth?.login(res.data.accessToken, res.data.user)
       const role = res.data.user.role
       if (role === 'SUPER_ADMIN') router.push('/superAdmin')
