@@ -21,12 +21,12 @@ export const login = async (req: Request, res: Response,next: NextFunction) => {
 
     const { accessToken, refreshToken } = loginService(user.id, user.role)
 
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000 
-    })
+   res.cookie('refreshToken', refreshToken, {
+  httpOnly: true,
+  secure: true,
+  sameSite: 'none',  // ← change this
+  maxAge: 24 * 60 * 60 * 1000
+})
 
     return res.status(200).json({ message: 'Login successful', accessToken,user:{
       id:user.id,
